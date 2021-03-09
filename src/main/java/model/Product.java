@@ -14,6 +14,7 @@ public class Product {
     private String delivery;
     private int numberOfPurchases;
     private String discount;
+    private String description;
 
     public Long getId() {
         return id;
@@ -103,6 +104,14 @@ public class Product {
         this.discount = discount;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -120,13 +129,14 @@ public class Product {
                 && Objects.equals(title, product.title)
                 && Objects.equals(url, product.url) && Objects.equals(currency, product.currency)
                 && Objects.equals(delivery, product.delivery)
-                && Objects.equals(discount, product.discount);
+                && Objects.equals(discount, product.discount)
+                && Objects.equals(description, product.description);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, category, title, url, currency, price,
-                priceWithoutDiscount, priceWithShipping, delivery, numberOfPurchases, discount);
+                priceWithoutDiscount, priceWithShipping, delivery, numberOfPurchases, discount, description);
     }
 
     @Override
@@ -143,6 +153,7 @@ public class Product {
                 + ", delivery='" + delivery + '\''
                 + ", numberOfPurchases=" + numberOfPurchases
                 + ", discount='" + discount + '\''
+                + ", description='" + description + '\''
                 + '}';
     }
 }

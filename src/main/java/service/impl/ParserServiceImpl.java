@@ -29,15 +29,25 @@ public class ParserServiceImpl implements ParserService {
     private static final String DELIVERY
             = "span[class=mpof_uk mqu1_ae _9c44d_18kEF _9c44d_3gH36 m9qz_yq ]";
     private static final String CATEGORY = "div[class=_17qy1 _bxr46 _d2756_GNE_S _d2756_2aXO4]";
+    private static final String DESCRIPTION = "dd[class=mpof_uk mp4t_0 m3h2_0 mryx_0 munh_0 "
+            + "mgmw_ia mg9e_0 mj7a_0 mh36_0 _9c44d_3n9Wf ]";
+    private static final String DESCRIPTION_TITLE = "dt[class=mpof_uk mgmw_ag mp4t_0 m3h2_0 "
+            + "mryx_0 munh_0 mg9e_0 mvrt_0 mj7a_0 mh36_0 _9c44d_3hPFO]";
     private static final String FILTER_1 = "%";
     private static final String FILTER_2 = "wyprzedaż";
     private static final int ZERO = 0;
     private static final int PRODUCT_URL = 0;
     private static final String URL_REGEX = "(https):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?+-=\\\\.&]*";
     private static final String NUMBER_REGEX = "[^\\d,]";
+    private static final String REGEX_FOR_CURRENCY = "[\\d, ]";
+    private static final String REGEX_FOR_DISCOUNT = "[^\\d,%]";
     private static final String PERCENT = "%";
     private static final String COMMA = ",";
     private static final String DOT = ".";
+    private static final String DELIMITER_WITH_COLON = ": ";
+    private static final String DELIMITER_WITH_SEMICOLON = "; ";
+    private static final String EMPTY_LINE = "";
+    private static final String SPACE = " ";
 
     @Override
     public List<Product> parser(Document document) {
@@ -58,13 +68,13 @@ public class ParserServiceImpl implements ParserService {
                 product.setTitle(element.select(TITLE).text());
 
                 product.setPrice(Double.parseDouble(element.select(PRICE).text()
-                        .replaceAll(NUMBER_REGEX, "").replaceAll(COMMA, DOT)));
+                        .replaceAll(NUMBER_REGEX, EMPTY_LINE).replaceAll(COMMA, DOT)));
 
                 String priceWithoutDiscount = element.select(PRICE_WITHOUT_DISCOUNT).text()
-                        .replaceAll(NUMBER_REGEX, "").replaceAll(COMMA, DOT);
+                        .replaceAll(NUMBER_REGEX, EMPTY_LINE).replaceAll(COMMA, DOT);
                 if (priceWithoutDiscount.isEmpty()) {
                     setDiscount(product, discount);
-                    product.setDiscount(product.getDiscount()
+                    product.setDiscount(product.getDiscount() + SPACE
                             + element.select(QUANTITY_OF_PRODUCT_FOR_DISCOUNT).text());
                     product.setPriceWithoutDiscount(product.getPrice());
                 } else {
@@ -73,13 +83,15 @@ public class ParserServiceImpl implements ParserService {
                 }
 
                 String priceWithShipping = element.select(PRICE_WITH_SHIPPING).text()
-                        .replaceAll(NUMBER_REGEX, "").replaceAll(COMMA, DOT);
+                        .replaceAll(NUMBER_REGEX, EMPTY_LINE).replaceAll(COMMA, DOT);
                 product.setPriceWithShipping(priceWithShipping.isEmpty() ? product.getPrice()
                         : Double.parseDouble(priceWithShipping));
 
-                product.setCurrency(element.select(PRICE).text().replaceAll("[\\d, ]", ""));
+                product.setCurrency(element.select(PRICE).text()
+                        .replaceAll(REGEX_FOR_CURRENCY, EMPTY_LINE));
 
-                String numberOfPurchases = element.select(PURCHASES).text().replaceAll("\\D+", "");
+                String numberOfPurchases = element.select(PURCHASES).text()
+                        .replaceAll(NUMBER_REGEX, EMPTY_LINE);
                 product.setNumberOfPurchases(numberOfPurchases.isEmpty() ? ZERO
                         : Integer.parseInt(numberOfPurchases));
 
@@ -87,6 +99,19 @@ public class ParserServiceImpl implements ParserService {
                 product.setUrl(urls.get(PRODUCT_URL));
 
                 product.setDelivery(element.select(DELIVERY).text());
+
+                List<String> descriptionTitles = element.select(DESCRIPTION_TITLE).eachText();
+                List<String> descriptions = element.select(DESCRIPTION).eachText();
+                StringBuilder description = new StringBuilder();
+                for (int i = 0; i < descriptionTitles.size(); i++) {
+                    description.append(descriptionTitles.get(i)).append(DELIMITER_WITH_COLON)
+                            .append(descriptions.get(i));
+                    if (i != descriptionTitles.size() - 1) {
+                        description.append(DELIMITER_WITH_SEMICOLON);
+                    }
+                }
+
+                product.setDescription(description.toString());
 
                 products.add(product);
             }
@@ -112,7 +137,7 @@ public class ParserServiceImpl implements ParserService {
 
     private void setDiscount(Product product, String discount) {
         product.setDiscount(discount.contains(FILTER_1) ? discount
-                .replaceAll("[^\\d,%]", "")
+                .replaceAll(REGEX_FOR_DISCOUNT, EMPTY_LINE)
                 : Math.round((1.0 - product.getPrice() / product.getPriceWithoutDiscount()) * 100)
                 + PERCENT);
     }

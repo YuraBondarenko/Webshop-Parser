@@ -8,7 +8,7 @@ import service.impl.MainServiceImpl;
 import service.impl.ParserServiceImpl;
 
 public class Main {
-    private static final String fileName = "src/main/resources/report.csv";
+    private static final String fileName = "src/main/resources/products.csv";
     private static final String CULTURE_URL
             = "https://allegro.pl/kategoria/kultura-i-rozrywka?string=bargain_zone&bmatch=e2101-d3720-c3682-cul-1-4-0304";
     private static final String ELECTRONICS_URL
