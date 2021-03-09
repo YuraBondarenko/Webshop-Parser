@@ -9,17 +9,17 @@ import service.MainService;
 import service.ParserService;
 import util.DocumentUtil;
 
-public class MainServiceImpl implements MainService {
+public class ProductMainServiceImpl implements MainService<Product> {
     private static final int MAX_LIST_SIZE = 100;
     private static final int FIRST_PAGE = 1;
     private static final String PAGE = "?p=";
-    private final ParserService parserService;
+    private final ParserService<Product> parserService;
 
-    public MainServiceImpl(ParserService parserService) {
+    public ProductMainServiceImpl(ParserService<Product> parserService) {
         this.parserService = parserService;
     }
 
-    public List<Product> getProducts(String url) {
+    public List<Product> getModelList(String url) {
         List<Product> products = new ArrayList<>();
         int page = FIRST_PAGE;
         while (products.size() < MAX_LIST_SIZE) {
@@ -29,8 +29,8 @@ public class MainServiceImpl implements MainService {
         return products;
     }
 
-    public String getStringFromProducts(List<Product> products) {
-        return products.stream()
+    public String getStringFromModel(List<Product> models) {
+        return models.stream()
                 .map(Product::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }

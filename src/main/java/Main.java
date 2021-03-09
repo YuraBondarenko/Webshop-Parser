@@ -4,8 +4,8 @@ import service.FileWriterService;
 import service.MainService;
 import service.ParserService;
 import service.impl.FileWriterServiceImpl;
-import service.impl.MainServiceImpl;
-import service.impl.ParserServiceImpl;
+import service.impl.ProductMainServiceImpl;
+import service.impl.ProductParserServiceImpl;
 
 public class Main {
     private static final String fileName = "src/main/resources/products.csv";
@@ -17,21 +17,21 @@ public class Main {
             = "https://allegro.pl/kategoria/supermarket?string=bargain_zone&bmatch=e2101-d3720-c3682-sup-1-4-0304";
 
     public static void main(String[] args) {
-        ParserService parserService = new ParserServiceImpl();
+        ParserService<Product> parserService = new ProductParserServiceImpl();
         FileWriterService fileWriterService = new FileWriterServiceImpl();
 
-        MainService mainService = new MainServiceImpl(parserService);
+        MainService<Product> mainService = new ProductMainServiceImpl(parserService);
 
-        List<Product> cultureProducts = mainService.getProducts(CULTURE_URL);
-        String culture = mainService.getStringFromProducts(cultureProducts);
+        List<Product> cultureProducts = mainService.getModelList(CULTURE_URL);
+        String culture = mainService.getStringFromModel(cultureProducts);
         fileWriterService.write(culture, fileName);
 
-        List<Product> electronicProducts = mainService.getProducts(ELECTRONICS_URL);
-        String electronic = mainService.getStringFromProducts(electronicProducts);
+        List<Product> electronicProducts = mainService.getModelList(ELECTRONICS_URL);
+        String electronic = mainService.getStringFromModel(electronicProducts);
         fileWriterService.write(electronic, fileName);
 
-        List<Product> supermarketProducts = mainService.getProducts(SUPERMARKET_URL);
-        String supermarketString = mainService.getStringFromProducts(supermarketProducts);
+        List<Product> supermarketProducts = mainService.getModelList(SUPERMARKET_URL);
+        String supermarketString = mainService.getStringFromModel(supermarketProducts);
         fileWriterService.write(supermarketString, fileName);
     }
 }

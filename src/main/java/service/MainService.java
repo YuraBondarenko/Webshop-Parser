@@ -1,10 +1,9 @@
 package service;
 
 import java.util.List;
-import model.Product;
 
-public interface MainService {
-    List<Product> getProducts(String url);
+public interface MainService<T> {
+    List<T> getModelList(String url);
 
-    String getStringFromProducts(List<Product> products);
+    String getStringFromModel(List<T> models);
 }

@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import service.ParserService;
 
-public class ParserServiceImpl implements ParserService {
+public class ProductParserServiceImpl implements ParserService<Product> {
     private static Long id = 1L;
     private static final int MAX_ID = 100;
     private static final String TITLE
