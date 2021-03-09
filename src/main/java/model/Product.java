@@ -136,7 +136,8 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id, category, title, url, currency, price,
-                priceWithoutDiscount, priceWithShipping, delivery, numberOfPurchases, discount, description);
+                priceWithoutDiscount, priceWithShipping, delivery,
+                numberOfPurchases, discount, description);
     }
 
     @Override
