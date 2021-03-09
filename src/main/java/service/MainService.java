@@ -6,5 +6,5 @@ import model.Product;
 public interface MainService {
     List<Product> getProducts(String url);
 
-    public String getStringFromProducts(List<Product> products);
+    String getStringFromProducts(List<Product> products);
 }

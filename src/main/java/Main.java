@@ -20,18 +20,18 @@ public class Main {
         ParserService parserService = new ParserServiceImpl();
         FileWriterService fileWriterService = new FileWriterServiceImpl();
 
-        MainService mainServiceImpl = new MainServiceImpl(parserService);
+        MainService mainService = new MainServiceImpl(parserService);
 
-        List<Product> cultureProducts = mainServiceImpl.getProducts(CULTURE_URL);
-        String culture = mainServiceImpl.getStringFromProducts(cultureProducts);
+        List<Product> cultureProducts = mainService.getProducts(CULTURE_URL);
+        String culture = mainService.getStringFromProducts(cultureProducts);
         fileWriterService.write(culture, fileName);
 
-        List<Product> electronicProducts = mainServiceImpl.getProducts(ELECTRONICS_URL);
-        String electronic = mainServiceImpl.getStringFromProducts(electronicProducts);
+        List<Product> electronicProducts = mainService.getProducts(ELECTRONICS_URL);
+        String electronic = mainService.getStringFromProducts(electronicProducts);
         fileWriterService.write(electronic, fileName);
 
-        List<Product> supermarketProducts = mainServiceImpl.getProducts(SUPERMARKET_URL);
-        String supermarketString = mainServiceImpl.getStringFromProducts(supermarketProducts);
+        List<Product> supermarketProducts = mainService.getProducts(SUPERMARKET_URL);
+        String supermarketString = mainService.getStringFromProducts(supermarketProducts);
         fileWriterService.write(supermarketString, fileName);
     }
 }
