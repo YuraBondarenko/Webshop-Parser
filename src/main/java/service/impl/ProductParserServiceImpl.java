@@ -33,6 +33,7 @@ public class ProductParserServiceImpl implements ParserService<Product> {
             + "mgmw_ia mg9e_0 mj7a_0 mh36_0 _9c44d_3n9Wf ]";
     private static final String DESCRIPTION_TITLE = "dt[class=mpof_uk mgmw_ag mp4t_0 m3h2_0 "
             + "mryx_0 munh_0 mg9e_0 mvrt_0 mj7a_0 mh36_0 _9c44d_3hPFO]";
+    private static final String VERIFIED_SELLER = "div[class=mpof_ki m389_6m msa3_z4 mgn2_13]";
     private static final String FILTER_1 = "%";
     private static final String FILTER_2 = "wyprzedaż";
     private static final int ZERO = 0;
@@ -112,6 +113,8 @@ public class ProductParserServiceImpl implements ParserService<Product> {
                 }
 
                 product.setDescription(description.toString());
+
+                product.setVerifiedSeller(!element.select(VERIFIED_SELLER).text().isEmpty());
 
                 products.add(product);
             }

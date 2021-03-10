@@ -15,6 +15,7 @@ public class Product {
     private int numberOfPurchases;
     private String discount;
     private String description;
+    private boolean verifiedSeller;
 
     public Long getId() {
         return id;
@@ -112,6 +113,14 @@ public class Product {
         this.description = description;
     }
 
+    public boolean isVerifiedSeller() {
+        return verifiedSeller;
+    }
+
+    public void setVerifiedSeller(boolean verifiedSeller) {
+        this.verifiedSeller = verifiedSeller;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -130,14 +139,15 @@ public class Product {
                 && Objects.equals(url, product.url) && Objects.equals(currency, product.currency)
                 && Objects.equals(delivery, product.delivery)
                 && Objects.equals(discount, product.discount)
-                && Objects.equals(description, product.description);
+                && Objects.equals(description, product.description)
+                && Objects.equals(verifiedSeller, product.verifiedSeller);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, category, title, url, currency, price,
                 priceWithoutDiscount, priceWithShipping, delivery,
-                numberOfPurchases, discount, description);
+                numberOfPurchases, discount, description, verifiedSeller);
     }
 
     @Override
@@ -152,9 +162,10 @@ public class Product {
                 + ", priceWithoutDiscount=" + priceWithoutDiscount
                 + ", priceWithShipping=" + priceWithShipping
                 + ", delivery='" + delivery + '\''
-                + ", numberOfPurchases=" + numberOfPurchases
+                + ", numberOfPurchases='" + numberOfPurchases + '\''
                 + ", discount='" + discount + '\''
                 + ", description='" + description + '\''
+                + ", verifiedSeller=" + verifiedSeller
                 + '}';
     }
 }
